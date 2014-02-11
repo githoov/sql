@@ -1,0 +1,89 @@
+\documentclass[mathserif, xcolor=table, pdfpages, default, graphics, listings]{beamer}
+\usepackage[utf8]{inputenc}
+    \mode<presentation>
+\usepackage{beamerthemesplit, amssymb, verbatim, listings}
+    \usefonttheme{serif}
+\usepackage[labelformat=empty]{caption}
+
+\title{Manipulating Date Fields and An Introduction to Joins} 
+\author{Scott Hoover} 
+\date{\today}
+
+\begin{document}
+
+    \frame{\titlepage} 
+
+    \section{Outline}
+
+        \begin{frame}
+        \begin{itemize}
+            \item Manipulating Date Fields
+            \pause \item The Concept of Joins
+            \pause\item SQL and its {\tt{JOIN}} Operations
+        \end{itemize}
+        \end{frame}
+
+    \section{Manipulating Date Fields}
+
+        \frame{When working with data, time is typically an important variable. It's common to restrict one's analysis to a certain date range, or summarize data by some date field (\emph{e.g.}, month, year, day of week, or quarter). Knowing how to manipulate dates is important.}
+
+        \frame{The SQL functions we will use to manipulate date fields are {\tt{BETWEEN}}, {\tt{EXTRACT}}, {\tt{DATE\_FORMAT}}, {\tt{DATE\_ADD}}, and {\tt{INTERVAL}}}
+
+
+    \section{The Concept of Joins}
+
+
+        \subsection{A Set Theory Primer}
+        \begin{frame}
+        {Intersection}
+            \begin{align*}
+                A &= \{1,3,5,7,9\} \\
+                B &= \{2,4,6,8,10\} \\
+                A \cap B &= \varnothing
+            \end{align*}
+        \end{frame}
+
+        
+        \begin{frame}
+            \begin{align*}
+                A &= \{1,2,3,4\} \\
+                B &= \{3,4,5,6\} \\
+                A \cap B &= \{3,4\}
+            \end{align*}
+        \end{frame}   
+
+
+        \frame{The notion of intersection translates to joins, in that the \emph{x} tables being joined only return rows and columns in which there is a shared id or joining variable. In SQL, this is the {\tt{INNER JOIN}} operation. Let's see this with Facebook users and status updates.} 
+
+
+        \begin{frame}
+        {Union}
+            \begin{align*}
+                A &= \{1,3,5,7,9\} \\
+                B &= \{2,4,6,8,10\} \\
+                A \cup B &= \{1,2,3,4,5,6,7,8,9,10\}
+            \end{align*}
+        \end{frame}     
+
+
+        \begin{frame}
+            \begin{align*}
+                A &= \{1,2,3,4\} \\
+                B &= \{3,4,5,6\} \\
+                A \cup B &= \{1,2,3,4,5,6\}
+            \end{align*}
+        \end{frame} 
+
+
+        \begin{frame}
+        {Compliment}
+            \begin{align*}
+                U &= \{1,2,3,4,5,6,7,8,9,10\} \\
+                A &= \{1,3,5,7,9\} \\
+                A'&= \{2,4,6,8,10\}
+            \end{align*}
+        \end{frame}             
+
+        \frame{The notion of compliment and intersection translate into joins in SQL with {\tt{FULL OUTER JOIN}}, {\tt{LEFT OUTER JOIN}}, and {\tt{RIGHT OUTER JOIN}}}
+
+\end{document}

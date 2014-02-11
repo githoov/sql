@@ -1,0 +1,128 @@
+\documentclass[mathserif]{beamer}
+\mode<presentation>
+\usepackage{beamerthemesplit, amsmath, verbatim, listings}
+\usefonttheme{serif}
+
+\title{Regression} 
+\author{Scott Hoover} 
+\date{\today} 
+\begin{document}
+
+\frame{\titlepage} 
+
+\section{The Basic Idea} 
+\begin{frame}
+\begin{itemize}
+%\item Recall from algebra the equation for a line: \begin{math} y = mx + b \text{, where } b \text{ is the intercept and } m \text{ is the slope.}\end{math} 
+\item The basic idea of regression analysis is to fit a line or curve to data.
+\item Regression is primarily used to (i) quantify relationships between variables and to (ii) make predictions (arguably the more interesting of the two). 
+\end{itemize} 
+\end{frame}
+
+\section{A Test Case}
+\frame{Suppose we were interested in two variables: the age of a customer and their average order amount. Visualizing the data, we suspect there's a positive relationship between the two variables.}
+
+\begin{frame}
+\begin{center}
+\includegraphics[width=3in, height=3in]{order.pdf}
+\end{center}
+\end{frame}
+
+\frame{If we were to guess the relationship (\emph{i.e.}, draw a line), perhaps it would look something like this:}
+
+\begin{frame}
+\begin{center}
+\includegraphics[width=3in, height=3in]{order_line.pdf}
+\end{center}
+\end{frame}
+
+\frame{More concretely, we suspect that the mathematical relationship looks something like this:}
+
+\frame{
+\begin{center}
+\begin{math} y_{i} = \alpha + \beta x_{i} + \varepsilon_{i} \end{math},\\ \end{center} where \begin{math}\alpha \end{math} is the intercept, \begin{math}\beta \end{math} is the slope, \begin{math} x_{i} \end{math} is the age of person \emph{i}, \begin{math} y_{i} \end{math} is the average order amount of person \emph{i}, and \begin{math} \varepsilon \end{math} is an error term that captures the disturbance from the other variables we cannot observe. \begin{math}i = 1, 2, ..., n \end{math} is an index; in other words, there are \begin{math}n\end{math} rows in our table that consists of two columns.
+}
+
+\frame{\begin{math} \varepsilon \end{math} is the only thing that is different from the basic equation for a line. It is included because the points do not fall perfectly on a straight line; there is some variation to the data. Visually, we can think of \begin{math} \varepsilon_{i} \end{math} in the following way: } 
+
+\frame{
+\begin{center}
+\includegraphics[width=3in, height=3in]{error.pdf}
+\end{center}}
+
+\section{Least Squares Algorithm}
+\frame{There is a basic and efficient algorithm to get a line of best fit:
+\\
+\begin{align}
+SSE = \min_{ \{\alpha, \beta \}} \sum_{i=1}^{n} \varepsilon_{i}^2
+\end{align}}
+
+\frame{If \begin{math}\varepsilon_{i} = y_{i} - \alpha - \beta x_{i}\end{math} then (1) can be re-written as
+\begin{align}
+SSE = \min_{ \{\alpha, \beta \}} \sum_{i=1}^{n} ( y_{i} - \alpha - \beta x_{i} )^2
+\end{align}}
+}
+
+\frame{\begin{center}Calculus!\end{center}}
+
+\frame{
+\begin{align*}
+\frac{\partial SSE}{\partial \alpha} &= \frac{\partial}{\partial \alpha}\left [ \sum_{i=1}^{n} (y_{i} - \alpha - \beta x_{i})^2 \right ] \\
+\frac{\partial SSE}{\partial \alpha} &= \sum_{i=1}^{n} \left [\frac{\partial}{\partial \alpha}  (y_{i} - \alpha - \beta x_{i})^2 \right ] \\
+\frac{\partial SSE}{\partial \alpha} &= \sum_{i=1}^{n} \left [-2 (y_{i} - \alpha - \beta x_{i}) \right ] \\
+\frac{\partial SSE}{\partial \alpha} &= -2\sum_{i=1}^{n} \left [ (y_{i} - \alpha - \beta x_{i}) \right ] \\
+\end{align*}}
+\frame{
+To minimize this function, we set it equal to zero and solve for \begin{math} \alpha \end{math}
+\begin{align*}
+0 &= -2\sum_{i=1}^{n} \left [ (y_{i} - \alpha - \beta x_{i}) \right ] \\
+0 &= \sum_{i=1}^{n} \left [ (y_{i} - \alpha - \beta x_{i}) \right ]  \\
+0 &=  \sum_{i=1}^{n} y_{i} - \sum_{i=1}^{n}\alpha - \sum_{i=1}^{n} \beta x_{i} \\
+\sum_{i=1}^{n}\alpha &=  \sum_{i=1}^{n} y_{i} - \beta \sum_{i=1}^{n}  x_{i} \\
+n\alpha &=  \sum_{i=1}^{n} y_{i} - \beta \sum_{i=1}^{n}  x_{i} \\
+\end{align*}
+}
+
+\frame{
+\begin{align*}
+\alpha &=  \left [ \frac{\sum_{i=1}^{n} y_{i}}{n}  \right ] - \beta \left [ \frac{\sum_{i=1}^{n}  x_{i}}{n} \right ]  \\
+\alpha &=  \bar{y} - \beta \bar{x} 
+\end{align*}
+}
+
+\frame{The above procedure for \begin{math} \beta \end{math} is a bit more involved, but results in the following:
+\begin{align*}
+\beta = \frac{\sum_{i=1}^{n}(x_{i}-\bar{x})(y_{i}-\bar{y})}{\sum_{i=1}^{n}(x_{i}-\bar{x})^2}
+%\beta = \frac{ \sum_{i=1}^{N}y_{i}x_{i} - \frac{\sum_{i=1}^{N}y_{i}\sum_{i=1}^{N}x_{i}}{N}}{\sum_{i=1}^{N}x_{i}^2 - \frac{(\sum_{i=1}^{N}x_{i})^2}{N}}
+\end{align*}
+}
+
+\frame{
+Visualization of the objective function
+\begin{center}
+\includegraphics[width=3in, height=3in]{sse}
+\end{center}
+}
+
+\frame{Our example is limited to two variables; however, in more realistic situations we'd be looking at a number of explanatory variables.}
+
+\frame{For the multivariate case, matrix notation simplifies the math considerably:
+\begin{align*}
+\boldsymbol{\beta} = (\textbf{X}^{\textsc{t}}\textbf{X})^{-1}\textbf{X}^{\textsc{t}}\textbf{y}
+\end{align*}
+}
+
+\begin{frame}
+\begin{center}
+\includegraphics[width=3in, height=3in]{3d}
+\end{center}
+\end{frame}
+
+\begin{frame}
+\small
+\verbatiminput{"/Users/Scott/Documents/Looker/output.txt"}\\
+\end{frame}
+
+
+\end{document}
+

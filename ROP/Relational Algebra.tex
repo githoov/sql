@@ -1,0 +1,181 @@
+\documentclass[mathserif, xcolor=table, pdfpages, default, graphics, listings]{beamer}
+\usepackage[utf8]{inputenc}
+    \mode<presentation>
+\usepackage{beamerthemesplit, amsmath, verbatim, listings}
+    \usefonttheme{serif}
+\usepackage[labelformat=empty]{caption}
+
+\title{An Introduction to Data Models and Data Retrieval} 
+\author{Scott Hoover} 
+\date{\today}
+
+\begin{document}
+
+    \frame{\titlepage} 
+
+    \section{Outline}
+
+        \begin{frame}
+        \begin{itemize}
+            \item Data Models
+            \pause \item The Concept of Relational Tables
+            \pause\item Relational Tables as a Preferred Data Store
+            \pause\item A Language to Query Relational Data
+        \end{itemize}
+        \end{frame}
+
+    \section{Data Models}
+        
+
+        \begin{frame}
+            A data model is basically a way of defining the way data is stored. While physical hard drives actually store bytes of data, a person had to think about the best \emph{way} to store that data|the structure.
+        \end{frame}   
+
+
+        \begin{frame}
+            There are a number of different ways to store data:
+                \begin{itemize}
+                    \pause \item \textbf{Flat models} will typically store data in one or more arrays and look like a table. Data in flat files are usually delimited by a value (\emph{e.g.}, comma- or tab-separated) 
+                    \pause\item \textbf{Hierarchical models} are tree-like systems of storing data, much like how files are stored in your computer. A file (child) exists in a folder (parent), which itself can exist and other folders or directories.
+                    \pause\item \textbf{Key-value models} are simple, loose data structures. Keys are unique identifiers that allow one to refer to the associated value. Values can assume any value or document. 
+                    \pause\item \textbf{Relational models} store tables of rows and columns that relate to one another through keys. This will be our primary focus.
+                \end{itemize}
+        \end{frame} 
+
+
+        \begin{frame}
+        Here's an example of a flat model:
+        \centerline{
+        \includegraphics[scale=0.3]{tsv.png}
+        }
+        \end{frame}
+
+
+        \begin{frame}
+        Here's an example of a hierarchical model:
+        \centerline{
+        \includegraphics[scale=0.3]{xml.png}
+        }
+        \end{frame}
+
+
+        \begin{frame}
+        Here's an example of a key-value model:
+        \centerline{
+        \includegraphics[scale=0.3]{json.png}
+        }
+        \end{frame}
+
+        \begin{frame}
+        Irrespective of the data model, the solution should address a few key points:
+            \begin{itemize}
+                \pause\item Is the solution flexible enough to use data in unforeseen ways?
+                \pause\item Can multiple users/consumers of the data access and alter the data concurrently?
+                \pause\item Is the solution practical enough to handle data that's too big to read into memory (\emph{e.g.}, web data)?
+            \end{itemize}
+        \end{frame}
+
+
+    \section{The Concept of Relational Tables}
+
+        \frame{In a relational table, each row represents a unique entity or event (\emph{e.g.}, a Facebook user, a purchase from Amazon). For each row, there are columns (I like to refer to them as attributes) that tell us about the entity or event (\emph{e.g.}, the date and time that the Facebook user created her account or the amount associated with the Amazon order).
+        }
+
+        \frame{
+        \centering Here's an example of a table...
+        }
+
+
+        \begin{frame}
+        {Likes table}
+        \centerline{
+        \includegraphics[scale=0.6]{table1.pdf}
+        }
+        \end{frame}
+
+
+        \begin{frame}
+            In a relational model, primary and foreign keys link tables to one another.
+        \end{frame}    
+
+
+        \begin{frame}
+            \centerline{ \includegraphics[scale=0.6]{table1.pdf} }
+            Here, \emph{like\_id} is the primary key and denotes the unique row or entry or, in our case, a ``like." The foreign keys are \emph{like\_profile\_id} and \emph{comment\_profile\_id} which relate the like table to the profiles of the liking user and the commenting user, respectively.
+        \end{frame}
+
+
+        \frame{Relational algebra is a way of describing how data relate to one another, particularly in the context of querying relational data.} 
+
+        \begin{frame}
+            However, relational algebra relies on formal logic and set theory and is, therefore, beyond the scope of this class. For our purposes, we will refer to a few key concepts from relational algebra: projection ({\tt{SELECT}}), restriction ({\tt{WHERE}}), and join ({\tt{JOIN}}).
+        \end{frame}
+
+
+    \section{Relational Tables as a Preferred Data Store}
+
+
+        \frame{There are two main reasons relational tables are are often a preferred way to store data.}
+
+
+        \frame{The first reason is that well-structured tables can be queried very quickly, which makes a serious difference when we're talking about tables with millions or billions of rows. This is because relational tables are structured to reduce redundant information (we'll see examples of this).}
+
+
+        \frame{The second reason is that relational tables are typically general enough so that people can query data in all sorts of ways that others may not have thought up when the data was first being structured or stored.}
+
+        \frame{Considering these two points above, we can revisit the Facebook ``Likes" table and see if it can be better structured.}
+
+        \begin{frame}
+        {Likes table}
+        \centerline{
+        \includegraphics[scale=0.6]{table1.pdf}
+        }
+	\pause Notice that the first and fifth rows in this table make reference to the same comment. By including the actual comment and the comment created time, we're taking up extra space on disk.
+        \end{frame}     
+
+        \frame{It might be more efficient to store the comment information in its own table and simply make reference to the unique comment with a key that maps these two tables together.}   
+
+
+        \begin{frame}
+            \begin{figure}[h!]
+                \centering
+                \caption{\tiny Likes Table}
+                \vspace{-0.1in}
+                \includegraphics[scale=0.5]{likes.pdf}
+            \end{figure}
+                \vspace{-0.2in}
+            \begin{figure}[h!]
+                \caption{\tiny Comments Table}
+                \vspace{-0.1in}
+                \includegraphics[scale=0.5]{comments.pdf}
+            \end{figure}
+                \vspace{-0.2in}
+            \begin{figure}[h!]
+                \caption{\tiny Profiles Table}
+                \vspace{-0.1in}
+                \includegraphics[scale=0.5]{profiles.pdf}
+            \end{figure}
+        \end{frame}        
+        
+       \frame{This whole set of tables and the way they relate to one another is referred to as ``the schema."}
+
+
+    \section{A Language to Query Relational Data}
+
+        \frame{By far, the most popular way to query relational tables is through SQL (a \underline{S}tructured \underline{Q}uery \underline{L}anguage), though there are others.}
+
+        \frame{SQL is a declarative language. This means that the code we write in SQL tells our program what we want, but not precisely how to get it|that is, the sequence of events is not explicit like imperative programming.}
+
+        \frame{If we want to print to the screen all of the ages in our profile table, our SQL statement would look something like this: \\
+        \tt{SELECT age \\
+        FROM profiles}} \\
+
+        In an imperative language we might have to specify the actual mechanism by why our program returns the results:
+
+        \begin{lstlisting}[language=javascript,basicstyle=\ttfamily,keywordstyle=\color{red}]
+        for (var i = 0; i < age.length; i++){
+            print(age[i])
+            }
+        \end{lstlisting}
+
+\end{document}

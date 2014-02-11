@@ -1,0 +1,78 @@
+\documentclass[mathserif, xcolor=table, pdfpages, default, graphics, listings]{beamer}
+\usepackage[utf8]{inputenc}
+    \mode<presentation>
+\usepackage{beamerthemesplit, amsmath, verbatim, listings}
+    \usefonttheme{serif}
+\usepackage[labelformat=empty]{caption}
+
+\title{An Introduction to Data Models and Data Retrieval} 
+\author{Scott Hoover} 
+\date{\today}
+
+\title{\vspace{.3in}
+	\fontsize{12pt}{10pt}
+	ROP Class Outline: Databases and Data Analysis
+	}	
+\author{
+	\vspace{-2mm}
+	}
+\date{}
+
+\begin{document}
+    \frame{\titlepage} 
+    \section*{Class Session 1}
+    \frame{
+    \begin{itemize}
+    	\item Data models
+        \item The concept of relational tables
+        \item Relational tables as a preferred data store
+        \item A language to query relational data (SQL)
+        \item SQL Basics: 
+            \begin{itemize}
+                \item the {\tt{SELECT}} command
+                \item the {\tt{WHERE}} command          
+            \end{itemize}
+    \end{itemize}
+    }
+ 
+\section*{Class Session 2}
+    \frame{
+    \begin{itemize}
+        \item Further restrictions with {\tt{WHERE}}
+        \item Using {\tt{BETWEEN}}
+        \item Using {\tt{DISTINCT}}
+        \item Working with dates using {\tt{EXTRACT}}
+        \item An introduction to aggregate functions
+            \begin{itemize}
+                \item {\tt{COUNT(*)}}
+                \item {\tt{COUNT DISTINCT}}
+                \item {\tt{SUM}}
+                \item {\tt{AVG}}
+            \end{itemize}
+        \item An introduction to {\tt{GROUP BY}}
+    \end{itemize}
+    }
+
+\section*{Class Session 3}
+    \frame{
+    \begin{itemize}
+        \item How to use the {\tt{GROUP BY}} operator
+        \item {\tt{SUM}} and {\tt{COUNT(*)}} with {\tt{GROUP BY}} for some person or location.
+        \item An introduction to joins
+            \begin{itemize}
+                \item {\tt{INNER JOIN}}
+                \item {\tt{LEFT OUTER JOIN}}
+                \item {\tt{FULL OUTER JOIN}}
+            \end{itemize}        
+    \end{itemize}    
+    }
+
+\section*{Class Session 4}
+    \frame{
+    \begin{itemize}
+        \item Putting it all together: Select, aggregate functions, restrictions and joins.
+        \item Wrap up: questions on further functionality of SQL
+        \item A high-level look at statistics and {\tt{R}}
+    \end{itemize}
+    }
+\end{document}
